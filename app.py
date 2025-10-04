@@ -10,7 +10,7 @@ def app_menu():
     print('\nChoose one option below:')
     print('1. Register a restaurant')
     print('2. List all restaurants registered')
-    print('3. Activate restaurant')
+    print('3. Enable or Disable restaurant')
     print('4. Exit application')
     app_options()
     
@@ -38,7 +38,10 @@ def app_options():
 
 def option_title(title):
     os.system('clear')
-    print(title, '\n')
+    print('*' * len(title))
+    print(title)
+    print('*' * len(title))
+    print()
 
 def register_restaurant():
     restaurant_name = input('What\'s the restaurant name: ').title()
@@ -52,17 +55,20 @@ def list_restaurants():
     for restaurant in restaurants:
         name = restaurant['name']
         category = restaurant['category']
-        status = 'Activated' if restaurant["status"] else 'Deactivated'
-        print(f'- {name} | {category} | {status}')
+        status = 'Activated' if restaurant["status"] else 'Disabled'
+        print(f'- {name.ljust(20)} | {category.ljust(20)} | {status}')
     return_to_menu()
 
 def change_restaurant_status():    
-    restaurant_selected = input('What is the name of the restaurant to change status: ')
+    restaurant_selected = input('What is the name of the restaurant to change status: ').title()
+    search_restaurant = False
     for restaurant in restaurants:
         if restaurant['name'] == restaurant_selected:
+            search_restaurant = True
             restaurant['status'] = not restaurant['status']
-        else:
-            print('Restaurant not found')
+            print(f'{restaurant['name']} is now {'Activated' if restaurant["status"] else 'Disabled'}')
+    if not search_restaurant:
+        print('Restaurant not found')
     return_to_menu()
 
 def exit_application():
